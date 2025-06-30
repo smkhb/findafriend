@@ -1,11 +1,6 @@
-import fastify from "fastify";
+import { app } from "./app";
+import { env } from "./env";
 
-const app = fastify();
-
-app.get("/", () => {
-  return "Welcome to the Find a Friend API!";
-});
-
-app.listen({ port: 3333 }).then(() => {
+app.listen({ port: env.PORT }).then(() => {
   console.log("API is running on http://localhost:3333");
 });
