@@ -68,7 +68,7 @@ model Pet {
   id          String  @id @default(cuid())
   name        String
   description String?
-  orgId       String? @map("org_id")
+  orgId       String  @map("org_id")
 
   age               Age
   energyLevel       EnergyLevel
@@ -79,7 +79,7 @@ model Pet {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  orgs Org? @relation(fields: [orgId], references: [id])
+  org Org @relation(fields: [orgId], references: [id])
 
   @@map("pets")
 }

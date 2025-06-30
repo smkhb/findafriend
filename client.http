@@ -1,0 +1,18 @@
+@baseURL = http://localhost:3333
+
+# @name create-org
+POST {{baseURL}}/accounts
+Content-Type: application/json
+
+{
+  "name": "Test Org",
+  "email": "test@org.com",
+  "password": "testpassword",
+  "phone": "1234567890",
+  "zip": "12345",
+  "address": "123 Test St",
+  "city": "Test City",
+  "state": "TS",
+  "country": "Test Country"
+}
+###
