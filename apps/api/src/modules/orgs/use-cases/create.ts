@@ -15,6 +15,10 @@ interface CreateORGUseCaseRequest {
   zip: string;
 }
 
+interface CreateORGUseCaseResponse {
+  org: ORG;
+}
+
 export class CreateORGUseCase {
   constructor(private orgsRepo: ORGSRepo) {}
 
@@ -28,7 +32,7 @@ export class CreateORGUseCase {
     city,
     state,
     zip,
-  }: CreateORGUseCaseRequest): Promise<unknown> {
+  }: CreateORGUseCaseRequest): Promise<CreateORGUseCaseResponse> {
     const existingUser = await this.orgsRepo.findByEmail(email);
 
     if (existingUser) {
@@ -51,6 +55,6 @@ export class CreateORGUseCase {
 
     await this.orgsRepo.createORG(org);
 
-    return org;
+    return { org };
   }
 }

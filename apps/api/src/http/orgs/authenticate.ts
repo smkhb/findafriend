@@ -24,8 +24,6 @@ export async function authenticate(
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(401).send({ message: error.message });
-    } else if (error instanceof ORGNotFoundError) {
-      return reply.status(404).send({ message: error.message });
     }
     console.error("Error creating organization:", error);
     return reply.status(500).send({ message: "Internal server error" });

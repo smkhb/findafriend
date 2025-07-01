@@ -1,7 +1,6 @@
 import { compare } from "bcryptjs";
 import { ORGSRepo } from "../repos/orgs-repo";
 import { ORG } from "../entities/org";
-import { ORGNotFoundError } from "../../../core/errors/org-not-found.error";
 import { InvalidCredentialsError } from "../../../core/errors/invalid-credentials-error";
 
 interface AuthenticateORGUseCaseRequest {
@@ -23,7 +22,7 @@ export class AuthenticateORGUseCase {
     const org = await this.orgsRepo.findByEmail(email);
 
     if (!org) {
-      throw new ORGNotFoundError();
+      throw new InvalidCredentialsError();
     }
 
     const doesPasswordMatch = await compare(password, org.password);
