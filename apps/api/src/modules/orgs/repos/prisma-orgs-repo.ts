@@ -4,6 +4,14 @@ import { prisma } from "../../../lib/prisma";
 import { ORG as DomainORG } from "../entities/org";
 
 export class PrismaOrgsRepo implements ORGSRepo {
+  async findByEmail(email: string): Promise<PrismaORG | null> {
+    
+    return await prisma.org.findUnique({
+      where: {
+        email: email,
+      },
+    });
+  }
   async createORG(raw: DomainORG): Promise<PrismaORG> {
     const data = {
       id: raw.id.toString(),

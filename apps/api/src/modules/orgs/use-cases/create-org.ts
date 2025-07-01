@@ -28,6 +28,12 @@ export class CreateORGUseCase {
     state,
     zip,
   }: CreateORGUseCaseRequest): Promise<unknown> {
+    const existingUser = await this.orgsRepo.findByEmail(email);
+
+    if (existingUser) {
+      throw new Error("Email already in use");
+    }
+
     const hashedPassword = await hash(password, 8);
 
     const org = ORG.create({
