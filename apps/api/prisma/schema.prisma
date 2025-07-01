@@ -57,7 +57,7 @@ model Org {
   zip         String
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 
   pets Pet[]
 

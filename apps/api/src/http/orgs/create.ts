@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import z from "zod";
-import { CreateORGUseCase } from "../../modules/orgs/use-cases/create-org";
 import { makeCreateORG } from "../../modules/orgs/use-cases/factories/make-create-org";
+import { ORGAlreadyExistsError } from "../../core/errors/org-already-exists-error";
 
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createORGSchema = z.object({
@@ -28,19 +28,26 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
     zip,
   } = createORGSchema.parse(request.body);
 
-  const createORGUseCase = makeCreateORG();
+  try {
+    const createORGUseCase = makeCreateORG();
 
-  await createORGUseCase.execute({
-    name,
-    email,
-    password,
-    description,
-    phone,
-    address,
-    city,
-    state,
-    zip,
-  });
-
+    await createORGUseCase.execute({
+      name,
+      email,
+      password,
+      description,
+      phone,
+      address,
+      city,
+      state,
+      zip,
+    });
+  } catch (error) {
+    if (error instanceof ORGAlreadyExistsError) {
+      return reply.status(409).send({ message: "Email already in use" });
+    }
+    console.error("Error creating organization:", error);
+    return reply.status(500).send({ message: "Internal server error" });
+  }
   return reply.status(201).send();
 }

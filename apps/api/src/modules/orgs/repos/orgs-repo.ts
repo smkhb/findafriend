@@ -1,6 +1,6 @@
-import { ORG } from "../entities/org";
+import { ORG as DomainORG } from "../entities/org";
 
 export abstract class ORGSRepo {
-  abstract createORG(data: ORG): Promise<unknown>;
-  abstract findByEmail(email: string): Promise<unknown | null>;
+  abstract createORG(data: DomainORG): Promise<void>;
+  abstract findByEmail(email: string): Promise<DomainORG | null>;
 }

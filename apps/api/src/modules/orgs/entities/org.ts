@@ -6,7 +6,7 @@ interface ORGProps {
   email: string;
   password: string;
 
-  description?: string;
+  description?: string | null;
   name: string;
   phone: string;
   address: string;
@@ -15,7 +15,7 @@ interface ORGProps {
   zip: string;
 
   createdAt: Date;
-  updatedAt?: Date;
+  updatedAt?: Date | null;
 }
 
 export class ORG extends Entity<ORGProps> {

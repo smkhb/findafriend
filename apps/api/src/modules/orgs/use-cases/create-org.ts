@@ -1,6 +1,7 @@
 import { hash } from "bcryptjs";
 import { ORGSRepo } from "../repos/orgs-repo";
 import { ORG } from "../entities/org";
+import { ORGAlreadyExistsError } from "../../../core/errors/org-already-exists-error";
 
 interface CreateORGUseCaseRequest {
   name: string;
@@ -31,7 +32,7 @@ export class CreateORGUseCase {
     const existingUser = await this.orgsRepo.findByEmail(email);
 
     if (existingUser) {
-      throw new Error("Email already in use");
+      throw new ORGAlreadyExistsError();
     }
 
     const hashedPassword = await hash(password, 8);
