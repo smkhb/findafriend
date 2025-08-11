@@ -23,4 +23,16 @@ export class PrismaOrgsRepo implements ORGSRepo {
       data,
     });
   }
+
+  async findByID(ID: string): Promise<boolean> {
+    const org = await prisma.org.findUnique({
+      where: {
+        id: ID,
+      },
+    });
+    if (!org) {
+      return false;
+    }
+    return true;
+  }
 }

@@ -12,7 +12,13 @@ export class InMemoryOrgsRepo implements ORGSRepo {
     }
     return org;
   }
+  
   async createORG(org: DomainORG): Promise<void> {
     this.items.push(org);
+  }
+
+  async findByID(ID: string): Promise<boolean> {
+    const org = this.items.find((org) => org.id.toString() === ID);
+    return !!org;
   }
 }

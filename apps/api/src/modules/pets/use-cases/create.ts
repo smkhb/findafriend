@@ -7,6 +7,7 @@ import { EnergyLevel } from "../entities/enums/energy-level";
 import { EnvironmentSize } from "../entities/enums/environment-size";
 import { IndependenceLevel } from "../entities/enums/indepence-level";
 import { Size } from "../entities/enums/size";
+import { ORGSRepo } from "../../orgs/repos/orgs-repo";
 
 interface CreatePetUseCaseRequest {
   name: string;
@@ -25,7 +26,7 @@ interface CreatePetUseCaseResponse {
 }
 
 export class CreatePetUseCase {
-  constructor(private petsRepo: PetsRepo) {}
+  constructor(private petsRepo: PetsRepo, private orgsRepo: ORGSRepo) {}
 
   async execute({
     name,
@@ -47,6 +48,12 @@ export class CreatePetUseCase {
       environmentSize,
       orgId: new UniqueEntityID(orgId),
     });
+
+    const orgExists = await this.orgsRepo.findByID(orgId);
+
+    if (!orgExists) {
+      throw new Error("Organization does not exist");
+    }
 
     await this.petsRepo.createPet(pet);
 
