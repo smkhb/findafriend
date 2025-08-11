@@ -1,18 +1,15 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { compare } from "bcryptjs";
 
 import { InMemoryPetsRepo } from "../repos/in-memory-pets-repo";
 import { InMemoryOrgsRepo } from "../../orgs/repos/in-memory-orgs-repo";
 import { CreatePetUseCase } from "./create";
 
-import { ORGAlreadyExistsError } from "../../../core/errors/org-already-exists-error";
 
 import { IndependenceLevel } from "../entities/enums/indepence-level";
 import { EnvironmentSize } from "../entities/enums/environment-size";
 import { EnergyLevel } from "../entities/enums/energy-level";
 import { Size } from "../entities/enums/size";
 import { Age } from "../entities/enums/age";
-import { create } from "domain";
 import { CreateORGUseCase } from "../../orgs/use-cases/create";
 
 let petsRepo: InMemoryPetsRepo;
@@ -68,25 +65,4 @@ describe("create pet use case", () => {
       })
     ).rejects.toThrow("Organization does not exist");
   });
-
-  // it("should hash the password before saving", async () => {
-  //   const { org } = await useCase.execute({
-  //     name: "Test Org",
-  //     email: "test@org.com",
-  //     password: "securepassword",
-  //     phone: "1234567890",
-  //     address: "123 Test St",
-  //     city: "Test City",
-  //     state: "Test State",
-  //     zip: "12345",
-  //   });
-
-  //   const isPasswordCorrectlyHashed = await compare(
-  //     "securepassword",
-  //     org.password
-  //   );
-
-  //   expect(org.password).not.toEqual("securepassword");
-  //   expect(isPasswordCorrectlyHashed).toBe(true);
-  // });
 });
