@@ -1,18 +1,10 @@
-import { ORGSRepo } from "./orgs-repo";
-import { ORG as DomainORG } from "../entities/org";
+import { PetsRepo } from "./pets-repo";
+import { Pet as DomainPet } from "../entities/pet";
 
-export class InMemoryOrgsRepo implements ORGSRepo {
-  public items: DomainORG[] = [];
+export class InMemoryPetsRepo implements PetsRepo {
+  public items: DomainPet[] = [];
 
-  async findByEmail(email: string): Promise<DomainORG | null> {
-    const org = this.items.find((org) => org.email === email);
-
-    if (!org) {
-      return null;
-    }
-    return org;
-  }
-  async createORG(org: DomainORG): Promise<void> {
+  async createPet(org: DomainPet): Promise<void> {
     this.items.push(org);
   }
 }
