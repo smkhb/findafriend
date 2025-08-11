@@ -11,7 +11,7 @@ import { EnvironmentSize } from "../../modules/pets/entities/enums/environment-s
 export async function create(request: FastifyRequest, reply: FastifyReply) {
   const createPetSchema = z.object({
     name: z.string().min(1, "Name is required"),
-    orgId: z.string().uuid("Invalid organization ID format"),
+    orgID: z.string().uuid("Invalid organization ID format"),
     description: z.string().optional(),
 
     age: z.nativeEnum(Age),
@@ -23,7 +23,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
   const {
     name,
-    orgId,
+    orgID,
     description,
     age,
     energyLevel,
@@ -37,7 +37,7 @@ export async function create(request: FastifyRequest, reply: FastifyReply) {
 
     await createPetUseCase.execute({
       name,
-      orgId,
+      orgID,
       description,
       age,
       energyLevel,

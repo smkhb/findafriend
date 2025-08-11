@@ -11,7 +11,7 @@ import { ORGSRepo } from "../../orgs/repos/orgs-repo";
 
 interface CreatePetUseCaseRequest {
   name: string;
-  orgId: string;
+  orgID: string;
   description?: string;
 
   age: Age;
@@ -36,7 +36,7 @@ export class CreatePetUseCase {
     independenceLevel,
     size,
     environmentSize,
-    orgId,
+    orgID,
   }: CreatePetUseCaseRequest): Promise<CreatePetUseCaseResponse> {
     const pet = Pet.create({
       name,
@@ -46,10 +46,10 @@ export class CreatePetUseCase {
       independenceLevel,
       size,
       environmentSize,
-      orgId: new UniqueEntityID(orgId),
+      orgID: new UniqueEntityID(orgID),
     });
 
-    const orgExists = await this.orgsRepo.findByID(orgId);
+    const orgExists = await this.orgsRepo.findByID(orgID);
 
     if (!orgExists) {
       throw new Error("Organization does not exist");

@@ -25,4 +25,19 @@ Content-Type: application/json
   "email": "test@org.com",
   "password": "testpassword"
 }
+###
 
+# @name create-pet
+POST {{baseURL}}/pet
+Content-Type: application/json
+
+{
+  "name": "Test pet",
+  "orgID": "bb0c3c63-4e46-4c80-bf17-13181100b3eb",
+  "description": "A friendly test pet",
+  "age": "PUPPY",
+  "energyLevel": "HIGH",
+  "size": "SMALL",
+  "independenceLevel": "VERY_DEPENDENT",
+  "environmentSize": "LARGE"
+}

@@ -10,7 +10,7 @@ import { Size } from "./enums/size";
 
 interface PetProps {
   name: string;
-  orgId: UniqueEntityID;
+  orgID: UniqueEntityID;
   description?: string | null;
 
   age: Age;
@@ -29,7 +29,7 @@ export class Pet extends Entity<PetProps> {
   }
 
   get orgId() {
-    return this.props.orgId;
+    return this.props.orgID;
   }
 
   get description() {
@@ -67,13 +67,13 @@ export class Pet extends Entity<PetProps> {
     this.props.updatedAt = new Date();
   }
 
-  static create(props: Optional<PetProps, "createdAt">, id?: UniqueEntityID) {
+  static create(props: Optional<PetProps, "createdAt">, ID?: UniqueEntityID) {
     const pet = new Pet(
       {
         ...props,
         createdAt: props.createdAt ?? new Date(),
       },
-      id
+      ID
     );
 
     return pet;
