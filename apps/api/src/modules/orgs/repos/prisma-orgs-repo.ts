@@ -35,4 +35,16 @@ export class PrismaOrgsRepo implements ORGSRepo {
     }
     return true;
   }
+
+  async findByCity(city: string): Promise<DomainORG[]> {
+    const orgs = await prisma.org.findMany({
+      where: {
+        city,
+      },
+    });
+    if (!orgs || orgs.length === 0) {
+      return [];
+    }
+    return orgs.map(PrismaORGMapper.toDomain);
+  }
 }

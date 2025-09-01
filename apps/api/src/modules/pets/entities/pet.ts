@@ -28,7 +28,7 @@ export class Pet extends Entity<PetProps> {
     return this.props.name;
   }
 
-  get orgId() {
+  get orgID() {
     return this.props.orgID;
   }
 

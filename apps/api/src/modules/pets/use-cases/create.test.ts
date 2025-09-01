@@ -39,7 +39,7 @@ describe("create pet use case", () => {
 
     const { pet } = await useCase.execute({
       name: "Test pet",
-      orgId: org.id.toString(),
+      orgID: org.id.toString(),
       description: "A friendly test pet",
       age: Age.PUPPY,
       energyLevel: EnergyLevel.HIGH,
@@ -55,7 +55,7 @@ describe("create pet use case", () => {
     await expect(
       useCase.execute({
         name: "Test pet",
-        orgId: "invalid-org-id",
+        orgID: "invalid-org-id",
         description: "A friendly test pet",
         age: Age.PUPPY,
         energyLevel: EnergyLevel.HIGH,
