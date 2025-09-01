@@ -18,8 +18,9 @@ export class FetchPetsByCityUseCase {
     city,
     page = 1,
   }: FetchPetsByCityUseCaseRequest): Promise<FetchPetsByCityUseCaseResponse> {
-    const org = await this.orgsRepo.findByCity(city);
-    const pets = await this.petsRepo.findByOrgID(org[0].id.toString()); //! Fetch only pets from the first org found in the city [FIX]
+    const orgs = await this.orgsRepo.findByCity(city);
+    const orgsIDs = orgs.map((org) => org.id.toString());
+    const pets = await this.petsRepo.findByOrgID(orgsIDs, page);
     return {
       pets,
     };

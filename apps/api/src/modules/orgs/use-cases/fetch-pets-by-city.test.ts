@@ -28,9 +28,19 @@ describe("create org use case", () => {
 
     useCase = new FetchPetsByCityUseCase(orgsRepo, petsRepo);
 
-    const org = await createOrgUseCase.execute({
-      name: "Test Org",
-      email: "test@org.com",
+    const firstOrg = await createOrgUseCase.execute({
+      name: "Test First Org",
+      email: "firsttest@org.com",
+      password: "securepassword",
+      phone: "1234567890",
+      address: "123 Test St",
+      city: "Test City",
+      state: "Test State",
+      zip: "12345",
+    });
+    const secondOrg = await createOrgUseCase.execute({
+      name: "Test Second Org",
+      email: "secondtest@org.com",
       password: "securepassword",
       phone: "1234567890",
       address: "123 Test St",
@@ -42,7 +52,7 @@ describe("create org use case", () => {
     await Promise.all([
       createPetUseCase.execute({
         name: "Test pet 1",
-        orgID: org.org.id.toString(),
+        orgID: firstOrg.org.id.toString(),
         description: "A friendly test pet",
         age: Age.PUPPY,
         energyLevel: EnergyLevel.HIGH,
@@ -53,7 +63,7 @@ describe("create org use case", () => {
       ,
       createPetUseCase.execute({
         name: "Test pet 2",
-        orgID: org.org.id.toString(),
+        orgID: firstOrg.org.id.toString(),
         description: "A friendly test pet",
         age: Age.PUPPY,
         energyLevel: EnergyLevel.HIGH,
@@ -63,7 +73,7 @@ describe("create org use case", () => {
       }),
       createPetUseCase.execute({
         name: "Test pet 3",
-        orgID: org.org.id.toString(),
+        orgID: secondOrg.org.id.toString(),
         description: "A friendly test pet",
         age: Age.PUPPY,
         energyLevel: EnergyLevel.HIGH,
@@ -73,7 +83,7 @@ describe("create org use case", () => {
       }),
       createPetUseCase.execute({
         name: "Test pet 4",
-        orgID: org.org.id.toString(),
+        orgID: secondOrg.org.id.toString(),
         description: "A friendly test pet",
         age: Age.PUPPY,
         energyLevel: EnergyLevel.HIGH,
@@ -86,8 +96,7 @@ describe("create org use case", () => {
 
   it("should be able to fetch pets by city", async () => {
     const pets = await useCase.execute({ city: "Test City", page: 1 });
-    console.log("Pets:", pets);
-    
+
     expect(pets.pets.length).toEqual(4);
   });
 });

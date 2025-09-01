@@ -8,9 +8,9 @@ export class InMemoryPetsRepo implements PetsRepo {
     this.items.push(org);
   }
 
-  async findByOrgID(orgID: string): Promise<DomainPet[]> {
-    const pets = this.items.filter((pet) => pet.orgID.toString() === orgID);
-
-    return pets;
+  async findByOrgID(orgID: string[], page: number): Promise<DomainPet[]> {
+    return this.items
+      .filter((pet) => orgID.includes(pet.orgID.toString()))
+      .slice((page - 1) * 20, page * 20);
   }
 }
