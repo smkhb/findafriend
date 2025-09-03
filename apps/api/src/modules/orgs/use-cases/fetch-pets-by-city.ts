@@ -38,6 +38,8 @@ export class FetchPetsByCityUseCase {
     const orgsIDs = orgs.map((org) => org.id.toString());
     const pets = await this.petsRepo.searchMany(orgsIDs, page, order, filters);
 
+    console.log(pets);
+    
     return {
       pets,
     };

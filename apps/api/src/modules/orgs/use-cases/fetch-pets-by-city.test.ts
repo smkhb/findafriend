@@ -18,7 +18,7 @@ let createPetUseCase: CreatePetUseCase;
 
 let useCase: FetchPetsByCityUseCase;
 
-describe("create org use case", () => {
+describe("fetch pets by city", () => {
   beforeEach(async () => {
     orgsRepo = new InMemoryOrgsRepo();
     createOrgUseCase = new CreateORGUseCase(orgsRepo);
@@ -27,7 +27,49 @@ describe("create org use case", () => {
     createPetUseCase = new CreatePetUseCase(petsRepo, orgsRepo);
 
     useCase = new FetchPetsByCityUseCase(orgsRepo, petsRepo);
+  });
 
+  it("should be able to fetch pets", async () => {
+    const { org } = await createOrgUseCase.execute({
+      name: "Test Org",
+      email: "test@org.com",
+      password: "securepassword",
+      phone: "1234567890",
+      address: "123 Test St",
+      city: "Test City",
+      state: "Test State",
+      zip: "12345",
+    });
+
+    await Promise.all([
+      createPetUseCase.execute({
+        name: "Test pet 1",
+        orgID: org.id.toString(),
+        description: "A friendly test pet",
+        age: Age.PUPPY,
+        energyLevel: EnergyLevel.HIGH,
+        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
+        size: Size.SMALL,
+        environmentSize: EnvironmentSize.LARGE,
+      }),
+      createPetUseCase.execute({
+        name: "Test pet 2",
+        orgID: org.id.toString(),
+        description: "A friendly test pet",
+        age: Age.PUPPY,
+        energyLevel: EnergyLevel.HIGH,
+        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
+        size: Size.SMALL,
+        environmentSize: EnvironmentSize.LARGE,
+      }),
+    ]);
+
+    const { pets } = await useCase.execute({ city: "Test City", page: 1 });
+
+    expect(pets.length).toEqual(2);
+  });
+
+  it("should be able to fetch pets from different orgs at the same city", async () => {
     const firstOrg = await createOrgUseCase.execute({
       name: "Test First Org",
       email: "firsttest@org.com",
@@ -38,6 +80,7 @@ describe("create org use case", () => {
       state: "Test State",
       zip: "12345",
     });
+
     const secondOrg = await createOrgUseCase.execute({
       name: "Test Second Org",
       email: "secondtest@org.com",
@@ -60,29 +103,8 @@ describe("create org use case", () => {
         size: Size.SMALL,
         environmentSize: EnvironmentSize.LARGE,
       }),
-      ,
       createPetUseCase.execute({
         name: "Test pet 2",
-        orgID: firstOrg.org.id.toString(),
-        description: "A friendly test pet",
-        age: Age.PUPPY,
-        energyLevel: EnergyLevel.HIGH,
-        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
-        size: Size.SMALL,
-        environmentSize: EnvironmentSize.LARGE,
-      }),
-      createPetUseCase.execute({
-        name: "Test pet 3",
-        orgID: secondOrg.org.id.toString(),
-        description: "A friendly test pet",
-        age: Age.PUPPY,
-        energyLevel: EnergyLevel.HIGH,
-        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
-        size: Size.SMALL,
-        environmentSize: EnvironmentSize.LARGE,
-      }),
-      createPetUseCase.execute({
-        name: "Test pet 4",
         orgID: secondOrg.org.id.toString(),
         description: "A friendly test pet",
         age: Age.PUPPY,
@@ -92,11 +114,85 @@ describe("create org use case", () => {
         environmentSize: EnvironmentSize.LARGE,
       }),
     ]);
-  });
 
-  it("should be able to fetch pets by city", async () => {
     const pets = await useCase.execute({ city: "Test City", page: 1 });
 
-    expect(pets.pets.length).toEqual(4);
+    expect(pets.pets.length).toEqual(2);
+  });
+
+  it("should be able to fetch filtered pet(s)", async () => {
+    const { org } = await createOrgUseCase.execute({
+      name: "Test Org",
+      email: "test@org.com",
+      password: "securepassword",
+      phone: "1234567890",
+      address: "123 Test St",
+      city: "Test City",
+      state: "Test State",
+      zip: "12345",
+    });
+
+    await Promise.all([
+      createPetUseCase.execute({
+        name: "Test pet 1",
+        orgID: org.id.toString(),
+        description: "A friendly test pet",
+        age: Age.PUPPY,
+        energyLevel: EnergyLevel.LOW,
+        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
+        size: Size.SMALL,
+        environmentSize: EnvironmentSize.LARGE,
+      }),
+      createPetUseCase.execute({
+        name: "Test pet 2",
+        orgID: org.id.toString(),
+        description: "A friendly test pet",
+        age: Age.PUPPY,
+        energyLevel: EnergyLevel.HIGH,
+        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
+        size: Size.SMALL,
+        environmentSize: EnvironmentSize.LARGE,
+      }),
+    ]);
+
+    const { pets } = await useCase.execute({
+      city: "Test City",
+      page: 1,
+      filters: { energyLevel: EnergyLevel.HIGH },
+    });
+
+    expect(pets.length).toEqual(1);
+    expect(pets[0].energyLevel).toEqual("HIGH");
+  });
+
+  it("should be able to fetch paginated pets search", async () => {
+    const { org } = await createOrgUseCase.execute({
+      name: "Test Org",
+      email: "test@org.com",
+      password: "securepassword",
+      phone: "1234567890",
+      address: "123 Test St",
+      city: "Test City",
+      state: "Test State",
+      zip: "12345",
+    });
+
+    for (let i = 1; i <= 22; i++) {
+      await createPetUseCase.execute({
+        name: `Test pet ${i}`,
+        orgID: org.id.toString(),
+        description: "A friendly test pet",
+        age: Age.PUPPY,
+        energyLevel: EnergyLevel.HIGH,
+        independenceLevel: IndependenceLevel.VERY_DEPENDENT,
+        size: Size.SMALL,
+        environmentSize: EnvironmentSize.LARGE,
+      });
+    }
+
+    const { pets } = await useCase.execute({ city: "Test City", page: 2 });
+    expect(pets.length).toEqual(2);
+    expect(pets[0].name).toEqual("Test pet 21");
+    expect(pets[1].name).toEqual("Test pet 22");
   });
 });
