@@ -31,7 +31,7 @@ export class PrismaPetMapper {
     return {
       id: pet.id.toString(),
       name: pet.name,
-      orgId: pet.orgId.toString(),
+      orgId: pet.orgID.toString(),
       description: pet.description,
       age: pet.age,
       energyLevel: pet.energyLevel,
