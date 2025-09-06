@@ -1,3 +1,4 @@
+import { CityNotProviedError } from "../../../core/errors/city-not-provided-erros";
 import { Age } from "../../pets/entities/enums/age";
 import { EnergyLevel } from "../../pets/entities/enums/energy-level";
 import { EnvironmentSize } from "../../pets/entities/enums/environment-size";
@@ -39,7 +40,7 @@ export class FetchPetsByCityUseCase {
     const pets = await this.petsRepo.searchMany(orgsIDs, page, order, filters);
 
     console.log(pets);
-    
+
     return {
       pets,
     };

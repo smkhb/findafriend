@@ -41,3 +41,7 @@ Content-Type: application/json
   "independenceLevel": "VERY_DEPENDENT",
   "environmentSize": "LARGE"
 }
+###
+
+# @name fetch-pets-by-city
+GET {{baseURL}}/pets?age=PUPPY
