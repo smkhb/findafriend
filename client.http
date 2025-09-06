@@ -44,4 +44,4 @@ Content-Type: application/json
 ###
 
 # @name fetch-pets-by-city
-GET {{baseURL}}/pets?age=PUPPY
+GET {{baseURL}}/pets?city=Test%20City&age=PUPPY
