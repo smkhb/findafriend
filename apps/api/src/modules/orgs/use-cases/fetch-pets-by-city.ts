@@ -1,4 +1,3 @@
-import { CityNotProviedError } from "../../../core/errors/city-not-provided-erros";
 import { Age } from "../../pets/entities/enums/age";
 import { EnergyLevel } from "../../pets/entities/enums/energy-level";
 import { EnvironmentSize } from "../../pets/entities/enums/environment-size";
