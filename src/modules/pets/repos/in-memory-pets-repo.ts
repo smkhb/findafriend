@@ -43,15 +43,23 @@ export class InMemoryPetsRepo implements PetsRepo {
     });
 
     const sortedPets = filteredPets.sort((a, b) => {
-        if (order === "asc") {
-          return a.createdAt.getTime() - b.createdAt.getTime();
-        } else {
-          return b.createdAt.getTime() - a.createdAt.getTime();
-        }
+      if (order === "asc") {
+        return a.createdAt.getTime() - b.createdAt.getTime();
+      } else {
+        return b.createdAt.getTime() - a.createdAt.getTime();
+      }
     });
 
     const paginatedPets = sortedPets.slice((page - 1) * 20, page * 20);
 
     return paginatedPets;
+  }
+
+  async findByID(petID: string): Promise<DomainPet | null> {
+    const pet = this.items.find((item) => item.id.toString() === petID);
+    if (!pet) {
+      return null;
+    }
+    return pet;
   }
 }

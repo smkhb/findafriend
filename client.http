@@ -45,3 +45,8 @@ Content-Type: application/json
 
 # @name fetch-pets-by-city
 GET {{baseURL}}/pets?city=Test%20City&age=PUPPY
+###
+
+# @name get-pet
+GET {{baseURL}}/pet?petID=3717bca0-0d7c-47df-941c-967184fad216
+###
