@@ -1,3 +1,4 @@
+import { skip } from "node:test";
 import { prisma } from "../../../lib/prisma";
 import { Age } from "../entities/enums/age";
 import { EnergyLevel } from "../entities/enums/energy-level";
@@ -26,6 +27,8 @@ export class PrismaPetsRepo implements PetsRepo {
         orgId: { in: orgID },
         ...filters,
       },
+      orderBy: { createdAt: order },
+      skip: (page - 1) * 20,
     });
 
     return data.map(PrismaPetMapper.toDomain);
@@ -37,5 +40,19 @@ export class PrismaPetsRepo implements PetsRepo {
     await prisma.pet.create({
       data,
     });
+  }
+
+  async findByID(petID: string): Promise<DomainPet | null> {
+    const pet = await prisma.pet.findUnique({
+      where: {
+        id: petID,
+      },
+    });
+
+    if (!pet) {
+      return null;
+    }
+
+    return PrismaPetMapper.toDomain(pet);
   }
 }

@@ -8,6 +8,7 @@ import { Age } from "../entities/enums/age";
 
 export abstract class PetsRepo {
   abstract createPet(data: DomainPet): Promise<void>;
+  abstract findByID(petID: string): Promise<DomainPet | null>;
   abstract searchMany(
     orgID: string[],
     page: number,
