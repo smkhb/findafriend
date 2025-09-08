@@ -1,4 +1,4 @@
-# FindAFriend API
+# FindAFriend API **
 
 ## Nesse desafio desenvolveremos uma API para a adoção de animais, a FindAFriend API, utilizando SOLID e testes
 
